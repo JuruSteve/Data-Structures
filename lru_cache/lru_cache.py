@@ -151,10 +151,9 @@ class LRUCache:
         if key not in self.dict_storage:
             return None
         else:
-            val = self.dict_storage[key]
-            # if self.storage.head.value == val:
-            # self.storage.move_to_front(self.storage.head)
-            return val
+            node = self.dict_storage[key]
+            self.storage.move_to_end(node)
+            return node.value[1]
 
     """
     Adds the given key-value pair to the cache. The newly-
@@ -168,14 +167,17 @@ class LRUCache:
     """
 
     def set(self, key, value):
-        if self.size == self.limit:
-            self.storage.remove_from_tail()
-            # self.storage.add_to_head(value)
-            self.dict_storage[key] = value
-            print('dddd', self.dict_storage)
+        if key not in self.dict_storage:
+            return None
         else:
-            if self.size < self.limit:
-                # self.storage.remove_from_tail()
-                self.storage.add_to_head(value)
-                self.dict_storage[key] = value
-                self.size += 1
+            node = self.dict_storage[key]
+            node.value = (key, value)
+            self.storage.move_to_end(node)
+            return
+
+        if self.size == self.limit:
+            del self.dict_storage[self.storage.remove_from_tail()[0]]
+            self.size -= 1
+        self.storage.add_to_tail((key, value))
+        self.dict_storage[key] = self.storage.tail
+        self.size -= 1

@@ -1,7 +1,7 @@
-# from dll_stack import Stack
-# from dll_queue import Queue
-# import sys
-# sys.path.append('../queue_and_stack')
+import sys
+sys.path.append('../queue_and_stack')
+from dll_stack import Stack
+from dll_queue import Queue
 
 # insert adds the input value to the binary search tree, adhering to the rules of the ordering of elements in a binary search tree.
 # contains searches the binary search tree for the input value, returning a boolean indicating whether the value exists in the tree or not.
@@ -71,17 +71,33 @@ class BinarySearchTree:
     # Hint:  Use a recursive, depth first traversal
 
     def in_order_print(self, node):
-        pass
+        if node is None:
+            return
+        self.in_order_print(node.left)
+        print(node.value)
+        self.in_order_print(node.right)
+
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
+
     def bft_print(self, node):
         pass
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
     def dft_print(self, node):
-        pass
+        new_stack = Stack()
+        new_stack.push(node)
+        while new_stack.len() > 0:
+            current = new_stack.pop()
+            print(current.value)
+            if current.left:
+                new_stack.push(current.left)
+            if current.right:
+                new_stack.push(current.right)
+
+
 
     # STRETCH Goals -------------------------
     # Note: Research may be required
@@ -93,3 +109,17 @@ class BinarySearchTree:
     # Print Post-order recursive DFT
     def post_order_dft(self, node):
         pass
+
+
+# Testing
+# bst = BinarySearchTree(1)
+
+# bst.insert(8)
+# bst.insert(5)
+# bst.insert(7)
+# bst.insert(6)
+# bst.insert(3)
+# bst.insert(4)
+# bst.insert(2)
+
+# bst.dft_print(bst)
